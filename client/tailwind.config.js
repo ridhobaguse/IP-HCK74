@@ -1,8 +1,18 @@
+const flowbite = require("flowbite-react/tailwind");
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./src/**/*.{html,js}"],
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", flowbite.content()],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "login-bg": "url('/src/assets/squad.jpg')",
+      },
+
+      backdropBlur: {
+        md: "10px", // Custom blur size
+      },
+    },
   },
-  plugins: [],
+  plugins: [flowbite.plugin()],
 };
