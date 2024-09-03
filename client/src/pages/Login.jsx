@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { BiLogInCircle } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import RiotLogo from "../components/RiotLogo";
 import "../index.css";
 
 const Login = () => {
@@ -38,7 +39,9 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-login-bg bg-cover bg-center min-h-screen flex items-center justify-center">
+    <div className="bg-login-bg bg-cover bg-center min-h-screen flex items-center justify-center relative">
+      {/* Riot Games Logo */}
+      <RiotLogo />
       <form
         onSubmit={handleLogin}
         className="bg-transparent-white backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-sm"
@@ -89,7 +92,7 @@ const Login = () => {
           </button>
         </div>
         <div className="mt-4 text-center">
-          <a href="#" className="text-sm text-blue-600 hover:underline">
+          <a href="#" className="text-sm text-white hover:underline">
             Don't have an account? Create an account
           </a>
         </div>
