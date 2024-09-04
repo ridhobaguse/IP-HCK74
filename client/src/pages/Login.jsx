@@ -1,14 +1,49 @@
-import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { BiLogInCircle } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import RiotLogo from "../components/RiotLogo";
 import "../index.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const nav = useNavigate();
+
+  async function handleCredentialResponse(response) {
+    try {
+      const { data } = await axios({
+        method: "POST",
+        url: "http://localhost:3000/google-login",
+        headers: {
+          google_token: response.credential,
+        },
+      });
+      console.log(data);
+      localStorage.setItem("access_token", data.access_token);
+      console.log("Navigating to homepage");
+      nav("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse,
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"),
+        { theme: "outline", size: "large" } // customization attributes
+      );
+      google.accounts.id.prompt(); // also display the One Tap dialog
+    };
+  }, []);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -29,7 +64,7 @@ const Login = () => {
         text: "You have been successfully logged in!",
       });
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login failed:pppppppp", error);
       Swal.fire({
         icon: "error",
         title: "Login Failed",
@@ -40,7 +75,6 @@ const Login = () => {
 
   return (
     <div className="bg-login-bg bg-cover bg-center min-h-screen flex items-center justify-center relative">
-      {/* Riot Games Logo */}
       <RiotLogo />
       <form
         onSubmit={handleLogin}
@@ -69,20 +103,19 @@ const Login = () => {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600"
           >
-            {showPassword ? "Hide" : "Show"}
+            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
           </button>
         </div>
-        <div className="flex justify-center mt-4">
-          <button
-            type="button"
-            className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 focus:outline-none"
-          >
-            <FcGoogle />
-            <span className="text-sm font-medium text-gray-700">
-              Sign in with Google
-            </span>
-          </button>
-        </div>
+        {/* google */}
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        />
+        ;{/* google */}
         <div className="flex justify-center mt-6">
           <button
             type="submit"
@@ -92,7 +125,10 @@ const Login = () => {
           </button>
         </div>
         <div className="mt-4 text-center">
-          <a href="#" className="text-sm text-white hover:underline">
+          <a
+            className="text-sm text-white hover:underline"
+            onClick={() => nav("/register")}
+          >
             Don't have an account? Create an account
           </a>
         </div>

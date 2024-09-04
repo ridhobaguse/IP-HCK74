@@ -1,12 +1,34 @@
 const { User } = require("../models/index");
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
+const { OAuth2Client } = require("google-auth-library");
+const { Op } = require("sequelize");
+
+const client = new OAuth2Client();
 
 class UserController {
   static async register(req, res, next) {
     try {
       const { username, email, password } = req.body;
-      let newUser = await User.create({
+      const existingUser = await User.findOne({
+        where: {
+          [Op.or]: [{ email: email }, { username: username }],
+        },
+      });
+
+      if (existingUser) {
+        if (existingUser.email === email) {
+          return res
+            .status(400)
+            .json({ message: "Email is already registered." });
+        }
+        if (existingUser.username === username) {
+          return res
+            .status(400)
+            .json({ message: "Username is already taken." });
+        }
+      }
+      const newUser = await User.create({
         username,
         email,
         password,
@@ -47,15 +69,32 @@ class UserController {
       res.status(200).json({ access_token });
     } catch (error) {
       console.log(error);
-
       next(error);
     }
   }
+
   static async googleLogin(req, res, next) {
     try {
-      res.status(200).json({ message: "Login Success" });
-    } catch (err) {
-      next(err);
+      const { google_token } = req.headers;
+      const ticket = await client.verifyIdToken({
+        idToken: google_token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      const user = await User.findOrCreate({
+        where: {
+          email: payload.email,
+        },
+        defaults: {
+          username: payload.name,
+          email: payload.email,
+          password: String(Math.random() * 20),
+        },
+      });
+      const access_token = signToken({ id: user.id });
+      res.status(200).json({ access_token });
+    } catch (error) {
+      next(error);
     }
   }
 }
