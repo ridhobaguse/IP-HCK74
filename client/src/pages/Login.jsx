@@ -12,37 +12,39 @@ import { GoogleLogin } from "@react-oauth/google";
 const Login = () => {
   const nav = useNavigate();
 
-  async function handleCredentialResponse(response) {
-    try {
-      const { data } = await axios({
-        method: "POST",
-        url: "http://localhost:3000/google-login",
-        headers: {
-          google_token: response.credential,
-        },
-      });
-      console.log(data);
-      localStorage.setItem("access_token", data.access_token);
-      console.log("Navigating to homepage");
-      nav("/");
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  useEffect(() => {
-    window.onload = function () {
-      google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        callback: handleCredentialResponse,
-      });
+  // async function handleCredentialResponse(response) {
+  //   try {
+  //     console.log("<><><>");
 
-      google.accounts.id.renderButton(
-        document.getElementById("buttonDiv"),
-        { theme: "outline", size: "large" } // customization attributes
-      );
-      google.accounts.id.prompt(); // also display the One Tap dialog
-    };
-  }, []);
+  //     const { data } = await axios({
+  //       method: "POST",
+  //       url: "http://localhost:3000/google-login",
+  //       headers: {
+  //         google_token: response.credential,
+  //       },
+  //     });
+  //     console.log(data);
+  //     localStorage.setItem("access_token", data.access_token);
+  //     console.log("Navigating to homepage");
+  //     nav("/");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // useEffect(() => {
+  //   window.onload = function () {
+  //     google.accounts.id.initialize({
+  //       client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+  //       callback: handleCredentialResponse,
+  //     });
+
+  //     google.accounts.id.renderButton(
+  //       document.getElementById("buttonDiv"),
+  //       { theme: "outline", size: "large" } // customization attributes
+  //     );
+  //     google.accounts.id.prompt(); // also display the One Tap dialog
+  //   };
+  // }, []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -71,6 +73,28 @@ const Login = () => {
         text: "Wrong Email or Password",
       });
     }
+  };
+
+  const fetchGoogleLogin = async (response) => {
+    try {
+      const { data } = await axios({
+        method: "POST",
+        url: "http://localhost:3000/google-login",
+        headers: {
+          google_token: response.credential,
+        },
+      });
+
+      localStorage.setItem("token", data.access_token);
+      nav("/");
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleGoogleLogin = async (response) => {
+    fetchGoogleLogin(response);
   };
 
   return (
@@ -109,13 +133,13 @@ const Login = () => {
         {/* google */}
         <GoogleLogin
           onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
+            handleGoogleLogin(credentialResponse);
           }}
           onError={() => {
             console.log("Login Failed");
           }}
         />
-        ;{/* google */}
+        ; ;{/* google */}
         <div className="flex justify-center mt-6">
           <button
             type="submit"

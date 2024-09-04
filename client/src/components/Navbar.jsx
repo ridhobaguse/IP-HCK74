@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../index.css";
 import SearchForm from "./Search";
@@ -6,18 +6,11 @@ import RiotLogo from "../assets/valorantLOGO.webp";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [username, setUsername] = useState(null);
   const navigate = useNavigate();
 
-  // Load username from localStorage or your preferred method
-  useEffect(() => {
-    const storedUsername = localStorage.getItem("username"); // Adjust key if necessary
-    setUsername(storedUsername);
-  }, []);
-
   const handleLogout = () => {
-    localStorage.removeItem("username"); // Remove username on logout
     setDropdownOpen(false);
+    localStorage.removeItem("token");
     navigate("/login");
   };
 
@@ -55,8 +48,7 @@ const Navbar = () => {
                 onClick={toggleDropdown}
                 className="flex items-center space-x-1 bg-gray-800 text-white px-3 py-2 rounded-md focus:outline-none hover:bg-gray-700"
               >
-                <span>{username || "USERNAME"}</span>{" "}
-                {/* Display username or default */}
+                <span>USERNAME</span>
                 <svg
                   className="h-4 w-4"
                   fill="none"

@@ -81,6 +81,7 @@ class UserController {
         audience: process.env.GOOGLE_CLIENT_ID,
       });
       const payload = ticket.getPayload();
+
       const user = await User.findOrCreate({
         where: {
           email: payload.email,
@@ -88,9 +89,11 @@ class UserController {
         defaults: {
           username: payload.name,
           email: payload.email,
-          password: String(Math.random() * 20),
+          password: "Yuben ganteng",
         },
+        hooks: false, // Disable hooks
       });
+
       const access_token = signToken({ id: user.id });
       res.status(200).json({ access_token });
     } catch (error) {
