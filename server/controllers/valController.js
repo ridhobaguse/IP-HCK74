@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 class ValorantController {
   static async getAllAgent(req, res, next) {
     try {
@@ -7,7 +9,7 @@ class ValorantController {
     try {
     } catch (error) {}
   }
-  static async getAllArsenal(req, res, next) {
+  static async getAllWeapon(req, res, next) {
     try {
     } catch (error) {}
   }

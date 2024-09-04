@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { BiLogInCircle } from "react-icons/bi";
@@ -8,47 +8,18 @@ import "../index.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { GoogleLogin } from "@react-oauth/google";
+import successSound from "../assets/sounds/jett.mp3";
 
 const Login = () => {
   const nav = useNavigate();
-
-  // async function handleCredentialResponse(response) {
-  //   try {
-  //     console.log("<><><>");
-
-  //     const { data } = await axios({
-  //       method: "POST",
-  //       url: "http://localhost:3000/google-login",
-  //       headers: {
-  //         google_token: response.credential,
-  //       },
-  //     });
-  //     console.log(data);
-  //     localStorage.setItem("access_token", data.access_token);
-  //     console.log("Navigating to homepage");
-  //     nav("/");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-  // useEffect(() => {
-  //   window.onload = function () {
-  //     google.accounts.id.initialize({
-  //       client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-  //       callback: handleCredentialResponse,
-  //     });
-
-  //     google.accounts.id.renderButton(
-  //       document.getElementById("buttonDiv"),
-  //       { theme: "outline", size: "large" } // customization attributes
-  //     );
-  //     google.accounts.id.prompt(); // also display the One Tap dialog
-  //   };
-  // }, []);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const playSuccessSound = () => {
+    const audio = new Audio(successSound);
+    audio.play();
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -59,6 +30,7 @@ const Login = () => {
         data: { email, password },
       });
       localStorage.setItem("token", response.data.access_token);
+      playSuccessSound(); // Play sound on successful login
       nav("/");
       Swal.fire({
         icon: "success",
@@ -66,7 +38,7 @@ const Login = () => {
         text: "You have been successfully logged in!",
       });
     } catch (error) {
-      console.error("Login failed:pppppppp", error);
+      console.error("Login failed:", error);
       Swal.fire({
         icon: "error",
         title: "Login Failed",
@@ -86,6 +58,7 @@ const Login = () => {
       });
 
       localStorage.setItem("token", data.access_token);
+      playSuccessSound(); // Play sound on successful login
       nav("/");
       console.log(data);
     } catch (error) {
@@ -130,7 +103,7 @@ const Login = () => {
             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
           </button>
         </div>
-        {/* google */}
+        {/* Google Login */}
         <GoogleLogin
           onSuccess={(credentialResponse) => {
             handleGoogleLogin(credentialResponse);
@@ -139,7 +112,6 @@ const Login = () => {
             console.log("Login Failed");
           }}
         />
-        ; ;{/* google */}
         <div className="flex justify-center mt-6">
           <button
             type="submit"

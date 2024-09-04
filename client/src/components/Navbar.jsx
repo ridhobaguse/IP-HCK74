@@ -27,17 +27,20 @@ const Navbar = () => {
               <img src={RiotLogo} alt="Logo" className="h-12 w-auto" />
             </Link>
             <div className="hidden md:flex space-x-6">
-              <Link to="/" className="hover:text-gray-300">
+              <Link to="/agent" className="hover:text-gray-300">
                 AGENTS
               </Link>
               <Link to="/" className="hover:text-gray-300">
                 MAPS
               </Link>
-              <Link to="/" className="hover:text-gray-300">
-                ARSENALS
+              <Link to="/weapon" className="hover:text-gray-300">
+                WEAPONS
               </Link>
               <Link to="/pbe-signup" className="hover:text-gray-300">
                 MY PROFILE
+              </Link>
+              <Link to="/specification" className="hover:text-gray-300">
+                SPECIFICATION
               </Link>
             </div>
           </div>

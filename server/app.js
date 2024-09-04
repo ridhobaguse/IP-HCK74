@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 const cors = require("cors");
 const express = require("express");
 const app = express();
+const valRoutes = require("./routes/valRoutes");
 
 console.log(process.env.NODE_ENV || "development");
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", require("./routes/userRoutes"));
+app.use("/api/valorant", valRoutes);
 
 app.use(require("./middlewares/errorHandler"));
 
