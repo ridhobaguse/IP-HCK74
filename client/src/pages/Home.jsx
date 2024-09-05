@@ -1,7 +1,8 @@
 import React from "react";
 import agentsImage from "../assets/jett2.webp";
-import iceboxImage from "../assets/icebox.jpg";
+import iceboxImage from "../assets/map.webp";
 import { Link } from "react-router-dom";
+import GeminiAi from "../components/GeminiAi";
 
 const Home = () => {
   return (
@@ -25,13 +26,14 @@ const Home = () => {
           VIEW ALL AGENTS
         </Link>
       </section>
+
       {/* Your Maps Section */}
       <section
         className="bg-cover bg-center py-20 px-8 flex flex-col items-center text-center text-gray-900"
         style={{ backgroundImage: `url(${iceboxImage})` }}
       >
-        <h2 className="text-5xl text-red-500 font-extrabold mb-6">YOUR MAPS</h2>
-        <p className="max-w-2xl font-bold text-red-500 text-lg mb-8">
+        <h2 className="text-5xl text-black font-extrabold mb-6">YOUR MAPS</h2>
+        <p className="max-w-2xl font-bold text-black text-lg mb-8">
           Fight around the world. Each map is a playground to showcase your
           creative thinking. Purpose-built for team strategies, spectacular
           plays, and clutch moments. Make the play others will imitate for years
@@ -43,6 +45,11 @@ const Home = () => {
         >
           VIEW ALL MAPS
         </Link>
+      </section>
+      {/* Gemini AI Section */}
+      <section className="py-2 px-2 flex flex-col items-center text-center">
+        <h1 className="text-4xl font-bold mb-8"></h1>
+        <GeminiAi /> {/* Display GeminiAi component */}
       </section>
     </div>
   );

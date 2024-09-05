@@ -7,6 +7,7 @@ import Weapon from "../pages/Weapon";
 import Agent from "../pages/Agent";
 import Map from "../pages/Map";
 import Profile from "../pages/Profile";
+import GeminiAi from "../components/GeminiAi";
 // import AgentDetail from "../pages/AgentDetail";
 import { isAuthenticated } from "../helpers/auth";
 import Navbar from "../components/Navbar";
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
       {
         path: "/map",
         element: <Map />,
+      },
+      {
+        path: "/gemini",
+        element: <GeminiAi />,
       },
       {
         path: "/profile",
