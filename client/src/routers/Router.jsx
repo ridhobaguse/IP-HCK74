@@ -13,6 +13,7 @@ import { isAuthenticated } from "../helpers/auth";
 import Navbar from "../components/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Footer from "../components/Footer";
+import MyProfile from "../pages/MyProfile";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
       {
         path: "/map",
         element: <Map />,
+      },
+      {
+        path: "/myprofile/:id",
+        element: <MyProfile />,
       },
       {
         path: "/gemini",
