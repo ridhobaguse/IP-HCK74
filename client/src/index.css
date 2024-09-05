@@ -20,4 +20,26 @@ nav .menu-item:hover {
   .dropdown:hover .dropdown-content {
     display: block;
   }
+  .navbar-link {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .navbar-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: red;
+    transition: width 0.3s ease;
+  }
+  
+  .navbar-link:hover::after {
+    width: 100%;
+  }
+
   

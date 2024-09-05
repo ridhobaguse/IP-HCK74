@@ -30,7 +30,7 @@ const Login = () => {
         data: { email, password },
       });
       localStorage.setItem("token", response.data.access_token);
-      playSuccessSound(); // Play sound on successful login
+      playSuccessSound();
       nav("/");
       Swal.fire({
         icon: "success",
@@ -58,7 +58,7 @@ const Login = () => {
       });
 
       localStorage.setItem("token", data.access_token);
-      playSuccessSound(); // Play sound on successful login
+      playSuccessSound();
       nav("/");
       console.log(data);
     } catch (error) {

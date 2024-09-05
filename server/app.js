@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", require("./routes/userRoutes"));
-app.use("/api/valorant", valRoutes);
+app.use("/val", valRoutes);
 
 app.use(require("./middlewares/errorHandler"));
 

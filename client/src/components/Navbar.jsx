@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../index.css";
+import "../index.css"; // Make sure this path is correct
 import SearchForm from "./Search";
 import RiotLogo from "../assets/valorantLOGO.webp";
 
@@ -19,7 +19,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-black text-white">
+    <nav className="bg-black text-white navbar">
       <div className="w-full mx-auto px-6 sm:px-10 lg:px-12">
         <div className="flex justify-between h-20 items-center">
           <div className="flex items-center space-x-6 md:space-x-10">
@@ -27,19 +27,25 @@ const Navbar = () => {
               <img src={RiotLogo} alt="Logo" className="h-12 w-auto" />
             </Link>
             <div className="hidden md:flex space-x-6">
-              <Link to="/agent" className="hover:text-gray-300">
+              <Link to="/agent" className="navbar-link hover:text-gray-300">
                 AGENTS
               </Link>
-              <Link to="/" className="hover:text-gray-300">
+              <Link to="/" className="navbar-link hover:text-gray-300">
                 MAPS
               </Link>
-              <Link to="/weapon" className="hover:text-gray-300">
+              <Link to="/weapon" className="navbar-link hover:text-gray-300">
                 WEAPONS
               </Link>
-              <Link to="/pbe-signup" className="hover:text-gray-300">
+              <Link
+                to="/pbe-signup"
+                className="navbar-link hover:text-gray-300"
+              >
                 MY PROFILE
               </Link>
-              <Link to="/specification" className="hover:text-gray-300">
+              <Link
+                to="/specification"
+                className="navbar-link hover:text-gray-300"
+              >
                 SPECIFICATION
               </Link>
             </div>

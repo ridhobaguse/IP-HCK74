@@ -4,8 +4,8 @@ import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Specification from "../pages/Specification";
 import Weapon from "../pages/Weapon";
-import Agent from "../pages/Agent";
-import AgentDetail from "../pages/AgentDetail";
+// import Agent from "../pages/Agent";
+// import AgentDetail from "../pages/AgentDetail";
 import { isAuthenticated } from "../helpers/auth";
 import Navbar from "../components/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -50,6 +50,12 @@ const router = createBrowserRouter([
     },
   },
   {
+    loader: () => {
+      if (!localStorage.getItem("token")) {
+        return redirect("/login");
+      }
+      return null;
+    },
     element: (
       <>
         <Navbar />
@@ -68,14 +74,14 @@ const router = createBrowserRouter([
           return null;
         },
       },
-      {
-        path: "/agent",
-        element: <Agent />,
-      },
-      {
-        path: "/agent/id",
-        element: <AgentDetail />,
-      },
+      // {
+      //   path: "/agent",
+      //   element: <Agent />,
+      // },
+      // {
+      //   path: "/agent/id",
+      //   element: <AgentDetail />,
+      // },
       {
         path: "/specification",
         element: <Specification />,
