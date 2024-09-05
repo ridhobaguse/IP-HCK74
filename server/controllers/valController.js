@@ -8,6 +8,10 @@ class ValController {
         .filter((agents) => agents.isPlayableCharacter)
         .map((agents) => ({
           name: agents.displayName,
+          role: {
+            displayName: agents.role.displayName,
+            displayIcon: agents.role.displayIcon,
+          },
           id: agents.uuid,
           image: agents.fullPortraitV2,
           abilities: agents.abilities.map((ability) => ({
@@ -41,12 +45,19 @@ class ValController {
       const response = await axios.get(`https://valorant-api.com/v1/weapons`);
       const weapon = response.data.data.map((weapons) => ({
         name: weapons.displayName,
+        displayIcon: weapons.displayIcon,
         id: weapons.uuid,
-        weaponStat: weapons.weaponStats,
-        shopData: weapons.abilities.map((shopdata) => ({
-          cost: shopdata.cost,
-          category: shopdata.category,
-        })),
+        weaponStat: {
+          fireRate: weapons.weaponStats?.fireRate,
+          magazineSize: weapons.weaponStats?.magazineSize,
+          equipTimeSeconds: weapons.weaponStats?.equipTimeSeconds,
+          reloadTimeSeconds: weapons.weaponStats?.reloadTimeSeconds,
+          firstBulletAccuracy: weapons.weaponStats?.firstBulletAccuracy,
+        },
+        shopData: {
+          cost: weapons.shopData?.cost,
+          category: weapons.shopData?.category,
+        },
       }));
       res.status(200).json(weapon);
     } catch (error) {

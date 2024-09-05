@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../index.css"; // Make sure this path is correct
-import SearchForm from "./Search";
 import RiotLogo from "../assets/valorantLOGO.webp";
 
 const Navbar = () => {
@@ -36,10 +35,7 @@ const Navbar = () => {
               <Link to="/weapon" className="navbar-link hover:text-gray-300">
                 WEAPONS
               </Link>
-              <Link
-                to="/pbe-signup"
-                className="navbar-link hover:text-gray-300"
-              >
+              <Link to="/profile" className="navbar-link hover:text-gray-300">
                 MY PROFILE
               </Link>
               <Link
@@ -50,8 +46,8 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
-          <div className="flex items-center space-x-6">
-            <SearchForm />
+          <div className="flex items-center space-x-6 gap-5">
+            Hello...
             <div className="relative">
               <button
                 onClick={toggleDropdown}

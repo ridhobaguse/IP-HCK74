@@ -1,6 +1,7 @@
 import React from "react";
 import agentsImage from "../assets/jett2.webp";
 import iceboxImage from "../assets/icebox.jpg";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -17,9 +18,12 @@ const Home = () => {
           create opportunities to let your gameplay shine. No two Agents play
           alike, just as no two highlight reels will look the same.
         </p>
-        <button className="bg-black text-white py-3 px-6 rounded-full shadow-lg hover:bg-gray-800 transition duration-300">
+        <Link
+          to="/agent"
+          className="bg-black text-white py-3 px-6 rounded-full shadow-lg hover:bg-gray-800 transition duration-300"
+        >
           VIEW ALL AGENTS
-        </button>
+        </Link>
       </section>
       {/* Your Maps Section */}
       <section
@@ -33,9 +37,12 @@ const Home = () => {
           plays, and clutch moments. Make the play others will imitate for years
           to come.
         </p>
-        <button className="bg-red-500 text-white py-3 px-6 rounded-full shadow-lg hover:bg-red-600 transition duration-300">
+        <Link
+          to="/map"
+          className="bg-red-500 text-white py-3 px-6 rounded-full shadow-lg hover:bg-red-600 transition duration-300"
+        >
           VIEW ALL MAPS
-        </button>
+        </Link>
       </section>
     </div>
   );

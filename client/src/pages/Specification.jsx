@@ -11,7 +11,7 @@ const Specification = () => {
           className="w-full h-64 object-cover rounded-lg shadow-lg"
         />
         <h1 className="absolute bottom-4 left-6 text-4xl font-extrabold text-white bg-red-500 bg-opacity-75 px-4 py-2 rounded-md">
-          Spesifikasi
+          Specification
         </h1>
       </div>
       <div className="bg-gray-800 rounded-lg shadow-lg p-8 mt-12">
