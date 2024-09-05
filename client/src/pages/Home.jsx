@@ -26,8 +26,8 @@ const Home = () => {
         className="bg-cover bg-center py-20 px-8 flex flex-col items-center text-center text-gray-900"
         style={{ backgroundImage: `url(${iceboxImage})` }}
       >
-        <h2 className="text-5xl font-extrabold mb-6">YOUR MAPS</h2>
-        <p className="max-w-2xl font-bold text-lg mb-8">
+        <h2 className="text-5xl text-red-500 font-extrabold mb-6">YOUR MAPS</h2>
+        <p className="max-w-2xl font-bold text-red-500 text-lg mb-8">
           Fight around the world. Each map is a playground to showcase your
           creative thinking. Purpose-built for team strategies, spectacular
           plays, and clutch moments. Make the play others will imitate for years

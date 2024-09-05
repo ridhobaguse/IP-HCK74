@@ -4,7 +4,8 @@ import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Specification from "../pages/Specification";
 import Weapon from "../pages/Weapon";
-// import Agent from "../pages/Agent";
+import Agent from "../pages/Agent";
+import Map from "../pages/Map";
 // import AgentDetail from "../pages/AgentDetail";
 import { isAuthenticated } from "../helpers/auth";
 import Navbar from "../components/Navbar";
@@ -74,10 +75,10 @@ const router = createBrowserRouter([
           return null;
         },
       },
-      // {
-      //   path: "/agent",
-      //   element: <Agent />,
-      // },
+      {
+        path: "/agent",
+        element: <Agent />,
+      },
       // {
       //   path: "/agent/id",
       //   element: <AgentDetail />,
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: "/specification",
         element: <Specification />,
+      },
+      {
+        path: "/map",
+        element: <Map />,
       },
       {
         path: "/weapon",

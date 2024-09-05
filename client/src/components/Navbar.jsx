@@ -30,7 +30,7 @@ const Navbar = () => {
               <Link to="/agent" className="navbar-link hover:text-gray-300">
                 AGENTS
               </Link>
-              <Link to="/" className="navbar-link hover:text-gray-300">
+              <Link to="/map" className="navbar-link hover:text-gray-300">
                 MAPS
               </Link>
               <Link to="/weapon" className="navbar-link hover:text-gray-300">

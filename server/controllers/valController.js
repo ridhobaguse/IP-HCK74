@@ -3,16 +3,19 @@ const axios = require("axios");
 class ValController {
   static async getAllAgent(req, res, next) {
     try {
-      const response = await axios.get(
-        `https://ap.api.riotgames.com/val/content/v1/contents?api_key=${process.env.API_KEY}`,
-        {
-          headers: { "X-Riot-Token": process.env.API_KEY },
-        }
-      );
-      const agents = response.data.characters.map((agent) => ({
-        name: agent.name,
-      }));
-      res.status(200).json(agents);
+      const response = await axios.get(`https://valorant-api.com/v1/agents`);
+      const agent = response.data.data
+        .filter((agents) => agents.isPlayableCharacter)
+        .map((agents) => ({
+          name: agents.displayName,
+          id: agents.uuid,
+          image: agents.fullPortraitV2,
+          abilities: agents.abilities.map((ability) => ({
+            displayName: ability.displayName,
+            displayIcon: ability.displayIcon,
+          })),
+        }));
+      res.status(200).json(agent);
     } catch (error) {
       next(error);
     }
@@ -20,14 +23,12 @@ class ValController {
 
   static async getAllMap(req, res, next) {
     try {
-      const response = await axios.get(
-        `https://ap.api.riotgames.com/val/content/v1/contents?api_key=${process.env.API_KEY}`,
-        {
-          headers: { "X-Riot-Token": process.env.API_KEY },
-        }
-      );
-      const map = response.data.maps.map((maps) => ({
-        name: maps.name,
+      const response = await axios.get(`https://valorant-api.com/v1/maps`);
+      const map = response.data.data.map((maps) => ({
+        name: maps.displayName,
+        id: maps.uuid,
+        coordinates: maps.coordinates,
+        image: maps.splash,
       }));
       res.status(200).json(map);
     } catch (error) {
@@ -37,10 +38,17 @@ class ValController {
 
   static async getAllWeapon(req, res, next) {
     try {
-      const response = await axios.get(
-        `https://ap.api.riotgames.com/val/content/v1/contents?api_key=${process.env.API_KEY}`
-      );
-      res.status(200).json(response.data);
+      const response = await axios.get(`https://valorant-api.com/v1/weapons`);
+      const weapon = response.data.data.map((weapons) => ({
+        name: weapons.displayName,
+        id: weapons.uuid,
+        weaponStat: weapons.weaponStats,
+        shopData: weapons.abilities.map((shopdata) => ({
+          cost: shopdata.cost,
+          category: shopdata.category,
+        })),
+      }));
+      res.status(200).json(weapon);
     } catch (error) {
       next(error);
     }
