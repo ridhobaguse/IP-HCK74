@@ -12,6 +12,10 @@ const Navbar = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+  const handleMyProfile = () => {
+    setDropdownOpen(false);
+    navigate("/myprofile/:id");
+  };
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
@@ -36,7 +40,7 @@ const Navbar = () => {
                 WEAPONS
               </Link>
               <Link to="/profile" className="navbar-link hover:text-gray-300">
-                MY PROFILE
+                CARDBOARD
               </Link>
               <Link
                 to="/specification"
@@ -71,6 +75,12 @@ const Navbar = () => {
               </button>
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-gray-800 text-white rounded-md shadow-lg z-50">
+                  <button
+                    onClick={handleMyProfile}
+                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700 focus:bg-gray-700"
+                  >
+                    My Card
+                  </button>
                   <button
                     onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700 focus:bg-gray-700"

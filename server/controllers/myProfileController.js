@@ -21,19 +21,19 @@ class MyProfileController {
           const agentResponse = await axios.get(
             `https://valorant-api.com/v1/agents/${entityUuid}`
           );
-          displayName = agentResponse.data.data.displayName;
+          displayName = agentResponse.data.displayName;
           break;
         case "maps":
           const mapResponse = await axios.get(
             `https://valorant-api.com/v1/maps/${entityUuid}`
           );
-          displayName = mapResponse.data.data.displayName;
+          displayName = mapResponse.data.displayName;
           break;
         case "weapons":
           const weaponResponse = await axios.get(
             `https://valorant-api.com/v1/weapons/${entityUuid}`
           );
-          displayName = weaponResponse.data.data.displayName;
+          displayName = weaponResponse.data.displayName;
           break;
         default:
           return res.status(400).json({ message: "Invalid type" });

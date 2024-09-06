@@ -40,8 +40,8 @@ export default profileSlice.reducer;
 export const createProfile = (profileData) => async (dispatch) => {
   dispatch(createProfileRequest());
   try {
-    const response = await axios.post(
-      "http://localhost:3000/myprofiles",
+    const response = await axios.get(
+      "http://localhost:3000/mp/myprofiles",
       profileData
     );
     dispatch(createProfileSuccess(response.data));

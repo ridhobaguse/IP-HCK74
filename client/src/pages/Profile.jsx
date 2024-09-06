@@ -11,21 +11,22 @@ const Profile = () => {
   const [selectedWeapons, setSelectedWeapons] = useState(null);
   const [options, setOptions] = useState([]);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const nav = useNavigate();
   const { profile, error, loading } = useSelector((state) => state.profile);
 
   useEffect(() => {
     if (profile) {
-      navigate(`/myprofile/${profile.id}`);
+      nav(`/myprofile/${profile.id}`);
     }
-  }, [profile, navigate]);
+  }, [profile, nav]);
 
   const fetchOptions = async (type) => {
     try {
       const response = await axios.get(`http://localhost:3000/val/${type}`);
+      console.log("Data fetched:", response.data);
       setOptions(response.data);
     } catch (error) {
-      console.error("Failed to load data for the selected type");
+      console.error("Failed to load data for the selected type:", error);
     }
   };
 
@@ -41,25 +42,27 @@ const Profile = () => {
 
   const handleSelectType = (type) => {
     setSelectedType(type);
+    setOptions([]);
   };
 
-  const handleEntityChange = (e, type) => {
-    switch (type) {
+  const handleEntityChange = (e) => {
+    const value = e.target.value;
+    switch (selectedType) {
       case "agents":
-        setSelectedAgents(e.target.value);
+        setSelectedAgents(value);
         break;
       case "maps":
-        setSelectedMaps(e.target.value);
+        setSelectedMaps(value);
         break;
       case "weapons":
-        setSelectedWeapons(e.target.value);
+        setSelectedWeapons(value);
         break;
       default:
         break;
     }
   };
 
-  const handleCreateProfile = (event) => {
+  const handleCreateCardboard = (event) => {
     event.preventDefault();
 
     if (!isFormValid()) {
@@ -67,8 +70,8 @@ const Profile = () => {
     }
 
     const profileData = {
-      userId: "", // Update this if needed
-      type: "combined",
+      userId: "",
+      type: selectedType,
       entityUuid: {
         agents: selectedAgents,
         maps: selectedMaps,
@@ -81,32 +84,21 @@ const Profile = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 border border-gray-200 bg-gray-100 rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold text-center mb-6">Create Profile</h1>
+      <h1 className="text-2xl font-bold text-center mb-6">Create Cardboard</h1>
       <div className="flex justify-around mb-6">
-        <div
-          className={`flex-1 m-2 p-4 border border-gray-300 rounded-lg cursor-pointer text-center hover:bg-gray-200 transition ${
-            selectedType === "agents" ? "bg-blue-100 border-blue-500" : ""
-          }`}
-          onClick={() => handleSelectType("agents")}
-        >
-          <h2 className="text-xl font-semibold">Agents</h2>
-        </div>
-        <div
-          className={`flex-1 m-2 p-4 border border-gray-300 rounded-lg cursor-pointer text-center hover:bg-gray-200 transition ${
-            selectedType === "maps" ? "bg-blue-100 border-blue-500" : ""
-          }`}
-          onClick={() => handleSelectType("maps")}
-        >
-          <h2 className="text-xl font-semibold">Maps</h2>
-        </div>
-        <div
-          className={`flex-1 m-2 p-4 border border-gray-300 rounded-lg cursor-pointer text-center hover:bg-gray-200 transition ${
-            selectedType === "weapons" ? "bg-blue-100 border-blue-500" : ""
-          }`}
-          onClick={() => handleSelectType("weapons")}
-        >
-          <h2 className="text-xl font-semibold">Weapons</h2>
-        </div>
+        {["agents", "maps", "weapons"].map((type) => (
+          <div
+            key={type}
+            className={`flex-1 m-2 p-4 border border-gray-300 rounded-lg cursor-pointer text-center hover:bg-gray-200 transition ${
+              selectedType === type ? "bg-blue-100 border-blue-500" : ""
+            }`}
+            onClick={() => handleSelectType(type)}
+          >
+            <h2 className="text-xl font-semibold">
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </h2>
+          </div>
+        ))}
       </div>
 
       {selectedType && (
@@ -123,22 +115,26 @@ const Profile = () => {
                 ? selectedMaps || ""
                 : selectedWeapons || ""
             }
-            onChange={(e) => handleEntityChange(e, selectedType)}
+            onChange={handleEntityChange}
             className="w-full p-2 border border-gray-300 rounded-lg"
             required
           >
             <option value="">Select {selectedType.slice(0, -1)}</option>
-            {options.map((option) => (
-              <option key={option.uuid} value={option.uuid}>
-                {option.displayName}
-              </option>
-            ))}
+            {options.length > 0 ? (
+              options.map((option, index) => (
+                <option key={`${option.uuid}-${index}`} value={option.uuid}>
+                  {option.name}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading options...</option>
+            )}
           </select>
         </div>
       )}
 
       <button
-        onClick={handleCreateProfile}
+        onClick={handleCreateCardboard}
         className={`w-full p-3 mt-6 text-white font-semibold rounded-lg transition ${
           isFormValid()
             ? "bg-green-500 hover:bg-green-600"
@@ -146,7 +142,7 @@ const Profile = () => {
         }`}
         disabled={!isFormValid()}
       >
-        {loading ? "Creating Profile..." : "Create Profile"}
+        {loading ? "Creating Cardboard..." : "Create Cardboard"}
       </button>
 
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}

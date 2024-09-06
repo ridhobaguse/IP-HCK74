@@ -7,6 +7,7 @@ const app = express();
 const valRoutes = require("./routes/valRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const myProfileRoutes = require("./routes/myProfileRoutes");
+// const midtrans = require("./routes/midtransRoutes");
 
 console.log(process.env.NODE_ENV || "development");
 
@@ -18,6 +19,7 @@ app.use("/", require("./routes/userRoutes"));
 app.use("/val", valRoutes);
 app.use("/ai", aiRoutes);
 app.use("/mp", myProfileRoutes);
+// app.use("/md", midtrans);
 
 app.use(require("./middlewares/errorHandler"));
 
