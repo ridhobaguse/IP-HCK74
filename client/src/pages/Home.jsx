@@ -6,7 +6,7 @@ import GeminiAi from "../components/GeminiAi";
 
 const Home = () => {
   return (
-    <div className="bg-gray-900 text-white">
+    <div className="bg-gray-900 text-white relative">
       {/* Your Agents Section */}
       <section
         className="bg-cover bg-center py-20 px-8 flex flex-col items-center text-center relative"
@@ -29,7 +29,7 @@ const Home = () => {
 
       {/* Your Maps Section */}
       <section
-        className="bg-cover bg-center py-20 px-8 flex flex-col items-center text-center text-gray-900"
+        className="bg-cover bg-center py-20 px-8 flex flex-col items-center text-center text-gray-900 relative"
         style={{ backgroundImage: `url(${iceboxImage})` }}
       >
         <h2 className="text-5xl text-black font-extrabold mb-6">YOUR MAPS</h2>
@@ -45,11 +45,11 @@ const Home = () => {
         >
           VIEW ALL MAPS
         </Link>
-      </section>
-      {/* Gemini AI Section */}
-      <section className="py-2 px-2 flex flex-col items-center text-center">
-        <h1 className="text-4xl font-bold mb-8"></h1>
-        <GeminiAi /> {/* Display GeminiAi component */}
+
+        {/* Gemini AI Section */}
+        <div className="bg-cover bg-center py-20 px-8 flex flex-col items-center text-center text-gray-900 relative">
+          <GeminiAi /> {/* Display GeminiAi component */}
+        </div>
       </section>
     </div>
   );

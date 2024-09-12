@@ -41,13 +41,13 @@ export const createProfile = (profileData) => async (dispatch) => {
   dispatch(createProfileRequest());
   try {
     const response = await axios.get(
-      "http://localhost:3000/mp/myprofiles",
+      `https://valcom.ekasanjaya.my.id/mp/myprofiles`,
       profileData
     );
     dispatch(createProfileSuccess(response.data));
   } catch (error) {
-    dispatch(
-      createProfileFailure(error.response?.data?.message || "An error occurred")
-    );
+    const errorMessage =
+      error.response?.data?.message || error.message || "An error occurred";
+    dispatch(createProfileFailure(errorMessage));
   }
 };

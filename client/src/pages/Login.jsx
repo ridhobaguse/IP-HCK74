@@ -26,7 +26,7 @@ const Login = () => {
     try {
       const response = await axios({
         method: "POST",
-        url: `http://localhost:3000/login`,
+        url: `https://valcom.ekasanjaya.my.id/login`,
         data: { email, password },
       });
       localStorage.setItem("token", response.data.access_token);
@@ -51,7 +51,7 @@ const Login = () => {
     try {
       const { data } = await axios({
         method: "POST",
-        url: "http://localhost:3000/google-login",
+        url: "https://valcom.ekasanjaya.my.id/google-login",
         headers: {
           google_token: response.credential,
         },

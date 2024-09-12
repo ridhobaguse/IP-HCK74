@@ -100,6 +100,25 @@ class UserController {
       next(error);
     }
   }
+  // controller buat ambil siapa user yang lagi login
+  static async getLoggedUser(req, res, next) {
+    try {
+      console.log("Xxxxxx", req.user);
+
+      const user = req.user;
+      if (!user) {
+        return res.status(400).json({ message: "User not authenticated" });
+      }
+      res.status(200).json({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      });
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      next(error);
+    }
+  }
 }
 
 module.exports = UserController;

@@ -1,20 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../index.css"; // Make sure this path is correct
+import "../index.css";
 import RiotLogo from "../assets/valorantLOGO.webp";
+import axios from "axios";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchLoggedUser();
+  }, []);
+
+  const fetchLoggedUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios({
+        method: "GET",
+        url: "http://localhost:3000/user",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(response.data, "User data");
+      setUser(response.data);
+    } catch (error) {
+      console.log("Error fetching user:", error);
+    }
+  };
 
   const handleLogout = () => {
     setDropdownOpen(false);
     localStorage.removeItem("token");
+    setUser(null);
     navigate("/login");
   };
+
   const handleMyProfile = () => {
     setDropdownOpen(false);
-    navigate("/myprofile/:id");
+    navigate(`/myprofile/${user.id}`);
   };
 
   const toggleDropdown = () => {
@@ -51,13 +77,12 @@ const Navbar = () => {
             </div>
           </div>
           <div className="flex items-center space-x-6 gap-5">
-            Hello...
             <div className="relative">
               <button
                 onClick={toggleDropdown}
                 className="flex items-center space-x-1 bg-gray-800 text-white px-3 py-2 rounded-md focus:outline-none hover:bg-gray-700"
               >
-                <span>USERNAME</span>
+                <span>{user ? user.username : "Loading..."}</span>
                 <svg
                   className="h-4 w-4"
                   fill="none"

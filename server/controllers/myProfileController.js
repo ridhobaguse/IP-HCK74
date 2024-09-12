@@ -16,27 +16,34 @@ class MyProfileController {
       });
 
       let displayName;
-      switch (type) {
-        case "agents":
-          const agentResponse = await axios.get(
-            `https://valorant-api.com/v1/agents/${entityUuid}`
-          );
-          displayName = agentResponse.data.displayName;
-          break;
-        case "maps":
-          const mapResponse = await axios.get(
-            `https://valorant-api.com/v1/maps/${entityUuid}`
-          );
-          displayName = mapResponse.data.displayName;
-          break;
-        case "weapons":
-          const weaponResponse = await axios.get(
-            `https://valorant-api.com/v1/weapons/${entityUuid}`
-          );
-          displayName = weaponResponse.data.displayName;
-          break;
-        default:
-          return res.status(400).json({ message: "Invalid type" });
+      try {
+        switch (type) {
+          case "agents":
+            const { data: agentData } = await axios.get(
+              `https://valorant-api.com/v1/agents/${entityUuid}`
+            );
+            displayName = agentData.data?.displayName || "Unknown Agent";
+            break;
+          case "maps":
+            const { data: mapData } = await axios.get(
+              `https://valorant-api.com/v1/maps/${entityUuid}`
+            );
+            displayName = mapData.data?.displayName || "Unknown Map";
+            break;
+          case "weapons":
+            const { data: weaponData } = await axios.get(
+              `https://valorant-api.com/v1/weapons/${entityUuid}`
+            );
+            displayName = weaponData.data?.displayName || "Unknown Weapon";
+            break;
+          default:
+            return res.status(400).json({ message: "Invalid type" });
+        }
+      } catch (apiError) {
+        return res.status(500).json({
+          message: "Failed to fetch external API data",
+          error: apiError.message,
+        });
       }
 
       res.status(201).json({
@@ -59,6 +66,7 @@ class MyProfileController {
       next(error);
     }
   }
+
   static async getOne(req, res, next) {
     try {
       const { id } = req.params;
@@ -77,6 +85,7 @@ class MyProfileController {
       next(error);
     }
   }
+
   static async update(req, res, next) {
     try {
       const { id } = req.params;
@@ -87,16 +96,26 @@ class MyProfileController {
       if (!profile) {
         return res.status(404).json({ message: "Profile not found" });
       }
-      profile.type = type || profile.type;
-      profile.entityUuid = entityUuid || profile.entityUuid;
 
-      await profile.save();
+      // Only update if values are provided
+      const updatedFields = {};
+      if (type) updatedFields.type = type;
+      if (entityUuid) updatedFields.entityUuid = entityUuid;
 
-      res.status(200).json(profile);
+      if (Object.keys(updatedFields).length === 0) {
+        return res.status(400).json({ message: "No changes detected" });
+      }
+
+      await profile.update(updatedFields);
+
+      res
+        .status(200)
+        .json({ message: "Profile updated successfully", profile });
     } catch (error) {
       next(error);
     }
   }
+
   static async delete(req, res, next) {
     try {
       const { id } = req.params;

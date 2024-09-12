@@ -6,24 +6,23 @@ import axios from "axios";
 
 const Profile = () => {
   const [selectedType, setSelectedType] = useState(null);
-  const [selectedAgents, setSelectedAgents] = useState(null);
-  const [selectedMaps, setSelectedMaps] = useState(null);
-  const [selectedWeapons, setSelectedWeapons] = useState(null);
+  const [selectedEntity, setSelectedEntity] = useState(null);
   const [options, setOptions] = useState([]);
   const dispatch = useDispatch();
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const { profile, error, loading } = useSelector((state) => state.profile);
 
   useEffect(() => {
     if (profile) {
-      nav(`/myprofile/${profile.id}`);
+      navigate(`/myprofile/${profile.id}`);
     }
-  }, [profile, nav]);
+  }, [profile, navigate]);
 
   const fetchOptions = async (type) => {
     try {
-      const response = await axios.get(`http://localhost:3000/val/${type}`);
-      console.log("Data fetched:", response.data);
+      const response = await axios.get(
+        `https://valcom.ekasanjaya.my.id/val/${type}`
+      );
       setOptions(response.data);
     } catch (error) {
       console.error("Failed to load data for the selected type:", error);
@@ -36,33 +35,19 @@ const Profile = () => {
     }
   }, [selectedType]);
 
-  const isFormValid = () => {
-    return selectedAgents && selectedMaps && selectedWeapons;
-  };
+  const isFormValid = () => selectedEntity !== null;
 
   const handleSelectType = (type) => {
     setSelectedType(type);
-    setOptions([]);
+    setSelectedEntity(null); // Reset the selected entity when changing type
+    setOptions([]); // Reset options to prevent showing outdated data
   };
 
   const handleEntityChange = (e) => {
-    const value = e.target.value;
-    switch (selectedType) {
-      case "agents":
-        setSelectedAgents(value);
-        break;
-      case "maps":
-        setSelectedMaps(value);
-        break;
-      case "weapons":
-        setSelectedWeapons(value);
-        break;
-      default:
-        break;
-    }
+    setSelectedEntity(e.target.value);
   };
 
-  const handleCreateCardboard = (event) => {
+  const handleCreateProfile = (event) => {
     event.preventDefault();
 
     if (!isFormValid()) {
@@ -70,12 +55,10 @@ const Profile = () => {
     }
 
     const profileData = {
-      userId: "",
+      userId: "", // Add the actual user ID here
       type: selectedType,
       entityUuid: {
-        agents: selectedAgents,
-        maps: selectedMaps,
-        weapons: selectedWeapons,
+        [selectedType]: selectedEntity,
       },
     };
 
@@ -108,13 +91,7 @@ const Profile = () => {
           </h2>
           <select
             id="entityUuid"
-            value={
-              selectedType === "agents"
-                ? selectedAgents || ""
-                : selectedType === "maps"
-                ? selectedMaps || ""
-                : selectedWeapons || ""
-            }
+            value={selectedEntity || ""}
             onChange={handleEntityChange}
             className="w-full p-2 border border-gray-300 rounded-lg"
             required
@@ -134,7 +111,7 @@ const Profile = () => {
       )}
 
       <button
-        onClick={handleCreateCardboard}
+        onClick={handleCreateProfile}
         className={`w-full p-3 mt-6 text-white font-semibold rounded-lg transition ${
           isFormValid()
             ? "bg-green-500 hover:bg-green-600"

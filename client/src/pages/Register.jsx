@@ -30,11 +30,14 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/register", {
-        username,
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `https://valcom.ekasanjaya.my.id/register`,
+        {
+          username,
+          email,
+          password,
+        }
+      );
 
       playSuccessSound();
 

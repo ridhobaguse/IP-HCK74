@@ -3,13 +3,19 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Card from "../components/Card";
 import SearchForm from "../components/SearchForm";
+import Pagination from "../components/Pagination";
 
 const Map = () => {
   const [maps, setMaps] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [mapsPerPage] = useState(8);
+
   const fetchMaps = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/val/maps`);
+      const response = await axios.get(
+        `https://valcom.ekasanjaya.my.id/val/maps`
+      );
       setMaps(response.data);
     } catch (error) {
       Swal.fire("Error", "Failed to fetch maps", "error");
@@ -25,6 +31,12 @@ const Map = () => {
     map.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const indexOfLastMap = currentPage * mapsPerPage;
+  const indexOfFirstMap = indexOfLastMap - mapsPerPage;
+  const currentMaps = filteredMaps.slice(indexOfFirstMap, indexOfLastMap);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="container mx-auto">
       <h1 className="text-center text-5xl font-bold mt-5 mb-4 text-black">
@@ -36,8 +48,9 @@ const Map = () => {
         <SearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
 
+      {/* Render maps */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filteredMaps.map((map) => (
+        {currentMaps.map((map) => (
           <Card
             key={map.id}
             id={map.id}
@@ -47,6 +60,14 @@ const Map = () => {
           />
         ))}
       </div>
+
+      {/* Pagination Component */}
+      <Pagination
+        agentsPerPage={mapsPerPage}
+        totalAgents={filteredMaps.length}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
     </div>
   );
 };
